@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  /* User Requested: Dark Background #111827 */
+  --color-dark-900: #111827; 
+  /* Slightly lighter for panels/sidebar if needed, distinct from bg */
+  --color-dark-800: #161e2e; 
+  
+  /* User Requested: Border #2F2F2F */
+  --color-dark-border: #2F2F2F;
+
+  --color-primary-500: #3274d9;
+  --color-primary-600: #2461c6;
+
+  --color-success: #299c46;
+  --color-warning: #e0bf00;
+  --color-danger: #f2495c;
+  --color-info: #5794f2;
+
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-sans: Inter, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-dark-900 text-gray-300 font-sans antialiased;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-dark-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-dark-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-dark-700);
+}

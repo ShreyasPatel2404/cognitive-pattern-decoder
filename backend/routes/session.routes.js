@@ -13,8 +13,8 @@ router.post(
   sessionController.createSession
 );
 
-// 📄 GET SESSIONS BY USER
-router.get("/user/:userId", authMiddleware, sessionController.getSessionsByUser);
+// 📄 GET SESSIONS BY USER (CURRENT LOGGED IN)
+router.get("/user", authMiddleware, sessionController.getSessionsByUser);
 
 // 📄 GET SESSIONS BY PROJECT
 router.get(

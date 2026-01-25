@@ -15,6 +15,11 @@ const SessionSchema = new mongoose.Schema({
   avgPauseTime: Number,
   sessionTime: Number,
 
+  cognitiveStyle: { type: String, default: null },
+  confidence: { type: Number, default: null },
+  visualization: { type: String, default: null }, // Base64 image
+  predictionTimestamp: { type: Date, default: null },
+
   createdAt: { type: Date, default: Date.now }
 });
 

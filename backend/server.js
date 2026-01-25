@@ -3,10 +3,12 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
+// Import Routes
 const authRoutes = require("./routes/auth.routes");
 const sessionRoutes = require("./routes/session.routes");
 const projectRoutes = require("./routes/project.routes");
 const mlResultRoutes = require("./routes/mlresult.routes");
+const userRoutes = require("./routes/user.routes");
 
 const app = express();
 
@@ -17,18 +19,20 @@ const corsOptions = {
   credentials: true
 };
 
-app.use(cors());
-// DB
-connectDB();
-
-// Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Routes
+// Connect Database
+connectDB();
+
+// Register Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/projects", projectRoutes);
-app.use("/api/mlresults", mlResultRoutes);
+app.use("/api/predict", require("./routes/predict")); // New Predict Route
+app.use("/api/mlresults", mlResultRoutes); // Keep for legacy if needed, or remove
+app.use("/api/users", userRoutes);
+app.use("/api/compare", require("./routes/compare.routes"));
 
 app.get("/", (req, res) => {
   res.send("Cognitive Pattern Decoder Backend Running");
