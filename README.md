@@ -1,5 +1,113 @@
 # Cognitive Pattern Decoder
 
+> Analyzes your real-time coding behavior to detect and visualize your cognitive coding style.
+
+**[🚀 Live Demo](#)** · **[📺 Demo Video](#)** · **[📦 VS Code Extension](#)**
+
+![Tests](https://github.com/ShreyasPatel2404/cognitive-pattern-decoder/actions/workflows/ci.yml/badge.svg)
+
+---
+
+## What it does
+
+Type code in VS Code → the extension streams your keystroke patterns (speed, pauses, deletions) to a backend via WebSocket → a Python ML service classifies your Cognitive Style using K-Means clustering → your dashboard shows your profile, trend over time, and AI-generated improvement tips powered by Google Gemini.
+
+## Architecture
+VS Code Extension (TypeScript)
+│  WebSocket
+▼
+Node.js + Express Backend  ──→  MongoDB Atlas
+│  HTTP
+▼
+Python FastAPI ML Service
+│
+▼
+React Dashboard (Vercel)
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| VS Code Extension | TypeScript, VS Code API |
+| Backend | Node.js, Express, Socket.io, JWT |
+| Database | MongoDB + Mongoose |
+| ML Service | Python, FastAPI, Scikit-learn |
+| Frontend | React, Vite, Tailwind CSS, Recharts |
+| AI Feedback | Google Gemini API |
+| Deployment | Vercel + Render + MongoDB Atlas (all free) |
+
+## Features
+
+- Real-time keystroke telemetry via VS Code extension
+- K-Means cognitive style classification (Fast & Confident, Careful, Debugging, etc.)
+- Dynamic confidence score per session
+- AI-generated personalized feedback (Gemini API)
+- Progress tracking with trend charts
+- Session history with pagination
+- Shareable result cards (PNG + public link)
+- JWT authentication
+
+## Setup
+
+### Prerequisites
+- Node.js 18+
+- Python 3.10+
+- MongoDB (local) or MongoDB Atlas account
+
+### 1. Clone
+```bash
+git clone https://github.com/ShreyasPatel2404/cognitive-pattern-decoder
+cd cognitive-pattern-decoder
+```
+
+### 2. Install all dependencies
+```bash
+npm run install:all
+```
+
+### 3. Configure environment variables
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+# Edit both files with your values
+```
+
+### 4. Start all services
+```bash
+# Terminal 1 — ML Service
+cd ml-services && pip install -r requirements.txt && python app.py
+
+# Terminal 2 — Backend
+npm run dev:backend
+
+# Terminal 3 — Frontend
+npm run dev:frontend
+```
+
+### 5. Install VS Code extension
+Open VS Code → Extensions → ··· → Install from VSIX → select `vs-code-extension/cognitive-pattern-decoder.vsix`
+
+Open VS Code settings and set:
+```json
+{
+  "cognitivePatternDecoder.serverUrl": "http://localhost:5000"
+}
+```
+
+## Contributing
+
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m 'feat: add your feature'`
+4. Push: `git push origin feature/your-feature`
+5. Open a Pull Request
+
+## License
+
+MIT
+
+# Cognitive Pattern Decoder
+
 **Cognitive Pattern Decoder** is a full-stack application that analyzes a developer's coding behavior (typing speed, pauses, deletions, navigation) to predict their "Cognitive Style" (e.g., Fast & Confident, Careful Problem Solver).
 
 It uses a **3-Layer Architecture** ensuring separation of concerns and scalability.

@@ -1,5 +1,26 @@
-node_modules/
+# Environment files
 .env
-.DS_Store
-*.zip
+.env.local
 
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Build outputs
+dist/
+build/
+*.vsix
+*.pkl
+
+# VS Code
+.vscode/settings.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+.nyc_output/

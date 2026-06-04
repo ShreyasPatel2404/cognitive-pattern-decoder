@@ -1,5 +1,19 @@
 {
-  "dependencies": {
-    "bcryptjs": "^3.0.3"
+  "name": "cognitive-pattern-decoder",
+  "version": "1.0.0",
+  "description": "Full-stack cognitive coding style analyzer with VS Code extension, Node.js backend, Python ML service, and AI-powered feedback",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:ml": "cd ml-services && python app.py",
+    "dev:extension": "cd vs-code-extension && npm run watch",
+    "install:all": "cd backend && npm i && cd ../frontend && npm i && cd ../vs-code-extension && npm i",
+    "test": "cd backend && npm test && cd ../frontend && npm test -- --watchAll=false",
+    "build:frontend": "cd frontend && npm run build",
+    "build:extension": "cd vs-code-extension && npm run package"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
