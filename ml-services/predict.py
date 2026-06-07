@@ -1,9 +1,26 @@
 import joblib
+import os
 import pandas as pd
 from preprocess import preprocess_data
+from train import train_model
 
-model = joblib.load("model.pkl")
-scaler = joblib.load("scaler.pkl")
+MODEL_PATH = "model/kmeans_model.pkl"
+SCALER_PATH = "model/scaler.pkl"
+
+def load_or_train_model():
+    if os.path.exists(MODEL_PATH) and os.path.exists(SCALER_PATH):
+        model = joblib.load(MODEL_PATH)
+        scaler = joblib.load(SCALER_PATH)
+        print("Model loaded from disk")
+    else:
+        model, scaler = train_model()
+        os.makedirs("model", exist_ok=True)
+        joblib.dump(model, MODEL_PATH)
+        joblib.dump(scaler, SCALER_PATH)
+        print("Model trained and saved to disk")
+    return model, scaler
+
+model, scaler = load_or_train_model()
 
 def predict_user(session_data):
     df = pd.DataFrame([session_data])

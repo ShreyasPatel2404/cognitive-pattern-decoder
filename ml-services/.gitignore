@@ -1,8 +1,11 @@
+model/
+*.pkl
 __pycache__/
+*.pyc
+.pytest_cache/
 *.py[cod]
 *$py.class
 venv/
 env/
 .env
 .DS_Store
-*.pkl

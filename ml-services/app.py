@@ -1,8 +1,9 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
+from datetime import datetime
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, Field
 from predict import predict_user
 import matplotlib
 matplotlib.use('Agg') # Fix for "main thread is not in main loop" error
@@ -38,9 +39,24 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         content={"detail": exc.errors(), "body": body},
     )
 
-# Data Model - Relaxed types to handle potential string inputs from frontend
-# Using 'Union[float, int, str, None]' or just defaults can help, 
-# but best to allow defaults and convert in logic if needed.
+class PredictRequest(BaseModel):
+    typingSpeed: float = Field(..., gt=0, description="Characters per minute")
+    avgPauseTime: float = Field(..., ge=0, description="Pauses per minute")
+    backspaceCount: float = Field(..., ge=0, description="Percentage of deletions")
+    fileSwitchCount: int = Field(..., ge=0, description="Navigation event count")
+    
+    # Optional fields for compatibility
+    saveCount: int = 0
+    compileAttempts: int = 0
+    sessionDuration: float = 0
+    pasteCount: int = 0
+    pasteCharacters: int = 0
+    pasteRatio: float = 0
+    accuracyRate: float = 0
+    userId: str = None
+    typedChars: int = 0
+    cursorMoveCount: int = 0
+
 class SessionData(BaseModel):
     typingSpeed: float = 0
     backspaceCount: int = 0
@@ -116,8 +132,12 @@ def generate_visualization(data: dict, cognitive_style: str):
 def root():
     return {"message": "ML Service is running 🚀"}
 
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "timestamp": datetime.utcnow().isoformat()}
+
 @app.post("/predict")
-def predict(session: SessionData):
+def predict(session: PredictRequest):
     try:
         # Convert Pydantic model to dict
         data_dict = session.dict()

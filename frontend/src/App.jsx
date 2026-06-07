@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import SessionAnalysis from './pages/SessionAnalysis';
@@ -7,43 +7,24 @@ import History from './pages/History';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import SessionDetail from './pages/SessionDetail';
+import Profile from './pages/Profile';
+import SharedResult from './pages/SharedResult';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
-          {/* Main Layout containing Public & Private Routes */}
-          <Route path="/" element={<Layout />}>
-
-            {/* Public Dashboard (Hybrid Mode handling inside component) */}
-            <Route index element={<Dashboard />} />
-
-            {/* Protected Routes */}
-            <Route path="session-analysis" element={
-              <ProtectedRoute>
-                <SessionAnalysis />
-              </ProtectedRoute>
-            } />
-            <Route path="history" element={
-              <ProtectedRoute>
-                <History />
-              </ProtectedRoute>
-            } />
-            <Route path="settings" element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            } />
-          </Route>
-
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/session/:id" element={<PrivateRoute><SessionDetail /></PrivateRoute>} />
+          <Route path="/history" element={<PrivateRoute><History /></PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/share/:token" element={<SharedResult />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

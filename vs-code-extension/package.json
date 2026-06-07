@@ -7,43 +7,56 @@
   "engines": {
     "vscode": "^1.85.0"
   },
-  "main": "./out/extension.js",
+  "main": "./src/extension.js",
   "activationEvents": [
-  "onCommand:cognitiveDecoder.login",
-  "onCommand:cognitiveDecoder.selectProject",
-  "onCommand:cognitiveDecoder.endSession"
-  ]
-,
-  "contributes": {
-  "commands": [
-    {
-      "command": "cognitiveDecoder.login",
-      "title": "Cognitive Decoder: Login"
-    },
-    {
-      "command": "cognitiveDecoder.selectProject",
-      "title": "Cognitive Decoder: Select Project"
-    },
-    {
-      "command": "cognitiveDecoder.endSession",
-      "title": "Cognitive Decoder: End Session"
-    }
+    "onStartupFinished",
+    "onCommand:cognitiveDecoder.login",
+    "onCommand:cognitiveDecoder.selectProject",
+    "onCommand:cognitiveDecoder.endSession"
   ],
-
-  "configuration": {
-      "title": "Cognitive Decoder",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cognitiveDecoder.login",
+        "title": "Cognitive Decoder: Login"
+      },
+      {
+        "command": "cognitiveDecoder.selectProject",
+        "title": "Cognitive Decoder: Select Project"
+      },
+      {
+        "command": "cognitiveDecoder.endSession",
+        "title": "Cognitive Decoder: End Session"
+      }
+    ],
+    "configuration": {
+      "title": "Cognitive Pattern Decoder",
       "properties": {
+        "cognitivePatternDecoder.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:5000",
+          "description": "Backend server URL"
+        },
+        "cognitivePatternDecoder.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable telemetry collection"
+        },
         "cognitiveDecoder.backendUrl": {
           "type": "string",
-          "default": "https://projectional-feasibly-santo.ngrok-free.dev",
-          "description": "Backend API base URL (use ngrok URL when needed)"
+          "default": "http://localhost:5000",
+          "description": "Backend API base URL (legacy - use cognitivePatternDecoder.serverUrl)"
         }
       }
     }
-}
-,
+  },
   "scripts": {
-    "compile": "tsc -p tsconfig.json"
+    "start": "node src/extension.js",
+    "vscode:prepublish": "npm run compile",
+    "compile": "echo \"No compile step needed for JS source\"",
+    "watch": "echo \"No watch step needed for JS source\"",
+    "package": "vsce package",
+    "lint": "eslint src"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
