@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import BehaviorRadarChart from '../components/charts/BehaviorRadarChart';
 import MetricCard from '../components/common/MetricCard';
 import { Brain } from 'lucide-react';
@@ -21,7 +21,7 @@ const SessionAnalysis = () => {
 
     const [error, setError] = useState(null);
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         if (!user) return;
 
         setLoading(true);
@@ -92,13 +92,13 @@ const SessionAnalysis = () => {
         } finally {
             setLoading(false);
         }
-    };
+}, [user]);
 
     useEffect(() => {
         if (user) {
             fetchData();
         }
-    }, [user]);
+    }, [user, fetchData]);
 
     if (loading) return <div className="p-8 text-center text-gray-400">Loading Analysis...</div>;
     if (error) return <div className="p-8 text-center text-danger">{error}</div>;

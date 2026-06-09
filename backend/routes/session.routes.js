@@ -13,6 +13,9 @@ router.post(
   sessionController.createSession
 );
 
+// 📄 GET SESSIONS WITH PAGINATION
+router.get("/", authMiddleware, sessionController.getSessionsByPage);
+
 // 📄 GET SESSIONS BY USER (CURRENT LOGGED IN)
 router.get("/user", authMiddleware, sessionController.getSessionsByUser);
 
@@ -22,5 +25,8 @@ router.get(
   authMiddleware,
   sessionController.getSessionsByProject
 );
+
+// 🗑️ DELETE SESSION
+router.delete('/:id', authMiddleware, sessionController.deleteSession);
 
 module.exports = router;

@@ -71,6 +71,14 @@ export const sessionService = {
         const response = await api.get(`/sessions/user`);
         return response.data;
     },
+    getSessionsByPage: async (page = 1, limit = 10) => {
+        const response = await api.get(`/sessions?page=${page}&limit=${limit}`);
+        return response.data;
+    },
+    deleteSession: async (sessionId) => {
+        const response = await api.delete(`/sessions/${sessionId}`);
+        return response.data;
+    },
     getSessionsByProject: async (projectId) => {
         const response = await api.get(`/sessions/project/${projectId}`);
         return response.data;

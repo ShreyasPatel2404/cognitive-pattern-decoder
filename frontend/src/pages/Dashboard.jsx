@@ -205,7 +205,7 @@ const Dashboard = () => {
         if (user) {
             fetchData();
         }
-    }, [user]);
+    }, [user, fetchData]);
 
     // HANDLE USER SELECTION FOR COMPARISON
     const handleUserSelect = async (selected) => {

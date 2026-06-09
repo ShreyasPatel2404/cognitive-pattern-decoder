@@ -50,10 +50,37 @@ exports.getSessionsByUser = async (req, res) => {
   try {
     // Strictly use the ID from the token, ignore params if they attempt to spoof
     const userId = req.user.userId;
-    const sessions = await Session.find({ userId }).sort({ createdAt: 1 });
+    const sessions = await Session.find({ userId }).sort({ createdAt: -1 });
     res.json(sessions);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch sessions" });
+  }
+};
+
+// ===============================
+// GET SESSIONS WITH PAGINATION
+// ===============================
+exports.getSessionsByPage = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { page = 1, limit = 10 } = req.query;
+    const pageNumber = Number(page) || 1;
+    const limitNumber = Number(limit) || 10;
+
+    const sessions = await Session.find({ userId })
+      .sort({ createdAt: -1 })
+      .skip((pageNumber - 1) * limitNumber)
+      .limit(limitNumber);
+
+    const total = await Session.countDocuments({ userId });
+    res.json({
+      sessions,
+      total,
+      pages: Math.ceil(total / limitNumber),
+      currentPage: pageNumber
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch paginated sessions" });
   }
 };
 
@@ -71,5 +98,28 @@ exports.getSessionsByProject = async (req, res) => {
     res.json(sessions);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch project sessions" });
+  }
+};
+
+// ===============================
+// DELETE SESSION
+// ===============================
+exports.deleteSession = async (req, res, next) => {
+  try {
+    const session = await Session.findOne({
+      _id: req.params.id,
+      userId: req.user.userId
+    });
+
+    if (!session) {
+      const err = new Error('Session not found');
+      err.statusCode = 404;
+      return next(err);
+    }
+
+    await Session.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Session deleted' });
+  } catch (error) {
+    next(error);
   }
 };
